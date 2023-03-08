@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Dice Game</string>
+    <string name="gameName">Dice Game</string>
+    <string name="new_game">New Game</string>
+    <string name="about">About</string>
+    <string name="popUpMessage">This is a popup window.</string>
+</resources>
