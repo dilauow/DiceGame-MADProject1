@@ -10,4 +10,19 @@ entirely my own. Any work from other authors is duly referenced
 and acknowledged.</string>
     <string name="your_score">Your Score</string>
     <string name="computer_score">Computer Score</string>
+    <string name="testtext">testText</string>
+    <string name="test_linw_1">Test Linw 1</string>
+    <string name="testline2">testline2</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="playerdiceimage">playerdiceImage</string>
+    <string name="player_dices">Player Dices</string>
+    <string name="computer_dices">Computer Dices</string>
+    <string name="shuffle">Shuffle</string>
+    <string name="score">Score</string>
+    <string name="you_lost">You Lost</string>
+    <string name="new_gaame">New Game</string>
+    <string name="zero">0</string>
+    <string name="you_lost1">You Lost</string>
+    <string name="play_again">Play Again</string>
 </resources>

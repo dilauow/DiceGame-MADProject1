@@ -11,17 +11,31 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import com.example.dicegame.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var drawerLayout : DrawerLayout
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        var popUpBtn: Button = findViewById(R.id.about)
-        popUpBtn.setOnClickListener {
-            onButtonShowPopupWindowClick(it)
-        }
+//        setContentView(R.layout.activity_main)
+
+        val binding= DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        drawerLayout = binding.drawerLayout
+
+        val navigationController = this.findNavController(R.id.NavHostFragment)
+        NavigationUI.setupActionBarWithNavController(this,navigationController,drawerLayout)
+
+//        var popUpBtn: Button = findViewById(R.id.about)
+//        popUpBtn.setOnClickListener {
+//            onButtonShowPopupWindowClick(it)
+//        }
     }
+
 
 
     @SuppressLint("ClickableViewAccessibility")
