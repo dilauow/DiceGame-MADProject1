@@ -24,11 +24,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 
-        val binding= DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        val binding : ActivityMainBinding= DataBindingUtil.setContentView(this, R.layout.activity_main)
         drawerLayout = binding.drawerLayout
 
+//        set up navcontroller
         val navigationController = this.findNavController(R.id.NavHostFragment)
-        NavigationUI.setupActionBarWithNavController(this,navigationController,drawerLayout)
+//        NavigationUI.setupActionBarWithNavController(this,navigationController,drawerLayout)
 
 //        var popUpBtn: Button = findViewById(R.id.about)
 //        popUpBtn.setOnClickListener {

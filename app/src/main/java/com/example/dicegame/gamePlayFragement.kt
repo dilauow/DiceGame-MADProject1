@@ -40,6 +40,7 @@ class gamePlayFragement : Fragment() {
 
 //    shuffle counter
     var shuffleCounter = 0
+    var computerShuffleCounter = 0
 
 //    previouslyClicked Dice
 
@@ -59,6 +60,7 @@ class gamePlayFragement : Fragment() {
 
         var yourTempScore =0
         var computerTempScore =0
+        computerShuffleCounter = (Random.nextInt(3)+1)
         playerDiceList = mutableListOf(dice1,dice2,dice3,dice4,dice5)
         computerDiceList = mutableListOf(binding.cd1,binding.cd2,binding.cd3,binding.cd4,binding.cd5)
         binding.shuffle.setOnClickListener {
@@ -68,22 +70,29 @@ class gamePlayFragement : Fragment() {
             }
             else{
                 yourTempScore = shuffleAlltheDices(playerDiceList,true)
-                yourScore= updateScore(binding.yourScroreValue,yourTempScore,it)
-                computerTempScore = shuffleAlltheDices(computerDiceList,false)
-                computerScore= updateScore(binding.computerScoreValue, computerTempScore, it)
+                yourScore= updateScore(binding.yourScroreValue,yourTempScore)
+//                computerTempScore = shuffleAlltheDices(computerDiceList,false)
+//                computerScore= updateScore(binding.computerScoreValue, computerTempScore)
+                computerShuffleCounter=RandomStratergyForRole(computerTempScore)
                 colourTheClickedDice()
                 winnerCheck(it)
                 shuffleCounter =0
 
             }
+//            make the computers 1st shuffle
+            if (shuffleCounter == 1){
+                computerTempScore = shuffleAlltheDices(computerDiceList,false)
+            }
+
 
 
         }
         binding.Score.setOnClickListener {
             if (shuffleCounter !=0){
-                yourScore= updateScore(binding.yourScroreValue,yourTempScore,it)
-                computerTempScore = shuffleAlltheDices(computerDiceList,false)
-                computerScore= updateScore(binding.computerScoreValue, computerTempScore, it)
+                yourScore= updateScore(binding.yourScroreValue,yourTempScore)
+//                computerTempScore = shuffleAlltheDices(computerDiceList,false)
+//                computerScore= updateScore(binding.computerScoreValue, computerTempScore)
+                computerShuffleCounter=RandomStratergyForRole(computerTempScore)
                 colourTheClickedDice()
                 winnerCheck(it)
                 shuffleCounter =0
@@ -114,13 +123,16 @@ class gamePlayFragement : Fragment() {
     }
 
     private fun shuffleAlltheDices(diceList : MutableList<ImageView>,player:Boolean): Int{
-        shuffleCounter += 1
+
         var tempTotal = 0
         var count =0
+        if(player){
+            shuffleCounter += 1
+        }
         for (imgSelectors in diceList){
 
-
             if (player){
+
 
                 if (yourDicesRollability[count]){
                     val score = rollDice(imgSelectors)
@@ -151,7 +163,7 @@ class gamePlayFragement : Fragment() {
        return tempTotal
     }
 
-    private fun updateScore(scoreHolder: TextView, tempTotal: Int, view: View):Int{
+    private fun updateScore(scoreHolder: TextView, tempTotal: Int):Int{
         var currentScore = scoreHolder.text.toString().toInt()
         currentScore += tempTotal
         scoreHolder.setText(currentScore.toString())
@@ -213,4 +225,32 @@ class gamePlayFragement : Fragment() {
         }
 
     }
+    private fun RandomStratergyForRole(firstAttemptScore: Int) : Int{
+
+        Log.d("Role NUmber", computerShuffleCounter.toString())
+        if (computerShuffleCounter==1){
+            updateScore(binding.computerScoreValue,firstAttemptScore)
+        }
+        if(computerShuffleCounter==2){
+            val holdVal = (Random.nextInt(5));
+            computerDicesRollability[holdVal] = false
+            val tempCompScore = shuffleAlltheDices(computerDiceList,false)
+            updateScore(binding.computerScoreValue,tempCompScore)
+        }
+        if (computerShuffleCounter==3){
+            var tempScore =0
+            var holdVal = (Random.nextInt(5));
+            computerDicesRollability[holdVal] = false
+            tempScore = shuffleAlltheDices(computerDiceList,false)
+            holdVal = (Random.nextInt(5));
+            computerDicesRollability[holdVal] = false
+            tempScore = shuffleAlltheDices(computerDiceList,false)
+            updateScore(binding.computerScoreValue,tempScore)
+
+        }
+
+        return (Random.nextInt(3)+1)
+
+    }
+
 }
