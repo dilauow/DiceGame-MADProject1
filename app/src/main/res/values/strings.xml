@@ -25,4 +25,6 @@ and acknowledged.</string>
     <string name="zero">0</string>
     <string name="you_lost1">You Lost</string>
     <string name="play_again">Play Again</string>
+    <string name="aboutText">This is the Hello Text</string>
+    <string name="Ok">Ok</string>
 </resources>

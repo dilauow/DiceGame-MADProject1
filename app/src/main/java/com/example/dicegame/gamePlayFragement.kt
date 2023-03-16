@@ -172,6 +172,8 @@ class gamePlayFragement : Fragment() {
 
     }
     private fun winnerCheck(view: View){
+        Log.d("Your Score", yourScore.toString())
+        Log.d("Computer Score", computerScore.toString())
         if (yourScore>= 100 || computerScore>= 100){
             if (yourScore<computerScore){
 //                you won
@@ -229,23 +231,25 @@ class gamePlayFragement : Fragment() {
 
         Log.d("Role NUmber", computerShuffleCounter.toString())
         if (computerShuffleCounter==1){
-            updateScore(binding.computerScoreValue,firstAttemptScore)
+            computerScore=updateScore(binding.computerScoreValue,firstAttemptScore)
         }
         if(computerShuffleCounter==2){
-            val holdVal = (Random.nextInt(5));
-            computerDicesRollability[holdVal] = false
+
+            computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
+            Log.d("Changed List ", computerDicesRollability.toString())
             val tempCompScore = shuffleAlltheDices(computerDiceList,false)
-            updateScore(binding.computerScoreValue,tempCompScore)
+            computerScore=updateScore(binding.computerScoreValue,tempCompScore)
         }
         if (computerShuffleCounter==3){
-            var tempScore =0
-            var holdVal = (Random.nextInt(5));
-            computerDicesRollability[holdVal] = false
-            tempScore = shuffleAlltheDices(computerDiceList,false)
-            holdVal = (Random.nextInt(5));
-            computerDicesRollability[holdVal] = false
-            tempScore = shuffleAlltheDices(computerDiceList,false)
-            updateScore(binding.computerScoreValue,tempScore)
+
+            computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
+            Log.d("Changed List ", computerDicesRollability.toString())
+            var tempCompScore = shuffleAlltheDices(computerDiceList,false)
+
+            computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
+            Log.d("Changed List ", computerDicesRollability.toString())
+            tempCompScore = shuffleAlltheDices(computerDiceList,false)
+            computerScore=updateScore(binding.computerScoreValue,tempCompScore)
 
         }
 
