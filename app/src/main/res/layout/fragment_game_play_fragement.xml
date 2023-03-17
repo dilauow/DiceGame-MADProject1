@@ -71,13 +71,15 @@
             android:layout_marginStart="140dp"
             android:layout_marginTop="21dp"
             android:layout_marginEnd="140dp"
-            android:layout_marginBottom="22dp"
+            android:layout_marginBottom="5dp"
             android:text="@string/player_dices"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/computerText"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="MissingConstraints" />
 
         <LinearLayout
@@ -135,7 +137,7 @@
             android:layout_marginTop="34dp"
 
             android:layout_marginEnd="120dp"
-            android:layout_marginBottom="14dp"
+            android:layout_marginBottom="6dp"
             android:text="@string/computer_dices"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
@@ -148,7 +150,7 @@
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="380dp"
+            android:layout_marginTop="360dp"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
@@ -193,6 +195,22 @@
 
         </LinearLayout>
 
+        <EditText
+            android:id="@+id/editWinningScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="112dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="27dp"
+            android:text="@string/_101"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/Score"
+            app:layout_constraintEnd_toStartOf="@+id/setwinScore"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            tools:ignore="MissingConstraints" />
+
         <Button
             android:id="@+id/Score"
             android:layout_width="wrap_content"
@@ -221,7 +239,19 @@
             app:layout_constraintStart_toEndOf="@+id/Score"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-
+        <Button
+            android:id="@+id/setwinScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="27dp"
+            android:layout_marginEnd="82dp"
+            android:layout_marginBottom="27dp"
+            android:text="@string/set_win_score"
+            app:layout_constraintBottom_toTopOf="@+id/shuffle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editWinningScore"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

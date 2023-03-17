@@ -27,4 +27,7 @@ and acknowledged.</string>
     <string name="play_again">Play Again</string>
     <string name="aboutText">This is the Hello Text</string>
     <string name="Ok">Ok</string>
+    <string name="you_won">You Won</string>
+    <string name="_101">101</string>
+    <string name="set_win_score">Set Win Score</string>
 </resources>

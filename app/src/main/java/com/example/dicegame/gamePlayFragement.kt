@@ -1,8 +1,9 @@
 package com.example.dicegame
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.example.dicegame.databinding.FragmentGamePlayFragementBinding
-import kotlin.math.log
 import kotlin.random.Random
 
 class gamePlayFragement : Fragment() {
@@ -26,6 +27,7 @@ class gamePlayFragement : Fragment() {
     lateinit var binding  : FragmentGamePlayFragementBinding
 
 //    gameBeginner
+    var winScore = 101
 
 //    score holders
     var yourScore : Int = 0
@@ -63,6 +65,12 @@ class gamePlayFragement : Fragment() {
         computerShuffleCounter = (Random.nextInt(3)+1)
         playerDiceList = mutableListOf(dice1,dice2,dice3,dice4,dice5)
         computerDiceList = mutableListOf(binding.cd1,binding.cd2,binding.cd3,binding.cd4,binding.cd5)
+//        set winning scores
+        binding.setwinScore.setOnClickListener {
+            changeWinScore()
+        }
+
+//        make the shuffle
         binding.shuffle.setOnClickListener {
             if (shuffleCounter<2){
                 yourTempScore =shuffleAlltheDices(playerDiceList,true)
@@ -71,8 +79,6 @@ class gamePlayFragement : Fragment() {
             else{
                 yourTempScore = shuffleAlltheDices(playerDiceList,true)
                 yourScore= updateScore(binding.yourScroreValue,yourTempScore)
-//                computerTempScore = shuffleAlltheDices(computerDiceList,false)
-//                computerScore= updateScore(binding.computerScoreValue, computerTempScore)
                 computerShuffleCounter=RandomStratergyForRole(computerTempScore)
                 colourTheClickedDice()
                 winnerCheck(it)
@@ -83,10 +89,9 @@ class gamePlayFragement : Fragment() {
             if (shuffleCounter == 1){
                 computerTempScore = shuffleAlltheDices(computerDiceList,false)
             }
-
-
-
         }
+
+//        click the score button
         binding.Score.setOnClickListener {
             if (shuffleCounter !=0){
                 yourScore= updateScore(binding.yourScroreValue,yourTempScore)
@@ -105,6 +110,11 @@ class gamePlayFragement : Fragment() {
         attachEventListenersForDices()
 
         return binding.root
+    }
+
+    private fun changeWinScore() {
+        winScore= binding.editWinningScore.text.toString().toInt()
+        binding.setwinScore.visibility = View.GONE
     }
 
     private fun rollDice(imgR : ImageView): Int {
@@ -174,16 +184,24 @@ class gamePlayFragement : Fragment() {
     private fun winnerCheck(view: View){
         Log.d("Your Score", yourScore.toString())
         Log.d("Computer Score", computerScore.toString())
-        if (yourScore>= 100 || computerScore>= 100){
+        if (yourScore>= winScore || computerScore>= winScore){
             if (yourScore<computerScore){
 //                you won
-                Navigation.findNavController(view).navigate(R.id.action_gamePlayFragement5_to_youLost)
+
+                val popUp = YouLostDialogBox.newInstance("You Lost",false)
+                popUp.show(childFragmentManager,"dialog")
+                binding.shuffle.visibility = View.GONE
+                binding.Score.visibility = View.GONE
+
 
             }
             else if (computerScore< yourScore){
 
 //                computer wins
-                Navigation.findNavController(view).navigate(R.id.action_gamePlayFragement5_to_youwon)
+                val popUp = YouLostDialogBox.newInstance("You Won",true)
+                popUp.show(childFragmentManager,"dialog")
+                binding.shuffle.visibility = View.GONE
+                binding.Score.visibility = View.GONE
 
             }
         }
