@@ -105,6 +105,7 @@ class gamePlayFragement : Fragment() {
                 colourTheClickedDice()
                 winnerCheck(it)
                 shuffleCounter =0
+
             }
             else{
                 Toast.makeText(activity,"Shuffle First",Toast.LENGTH_SHORT).show();
