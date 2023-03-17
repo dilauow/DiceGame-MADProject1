@@ -26,20 +26,19 @@ class YouLostDialogBox : DialogFragment() {
             val inflater = requireActivity().layoutInflater;
 
             if(won == true){
-                builder.setView(inflater.inflate(R.layout.fragment_youwon,null)).setMessage(message)
+                builder.setView(inflater.inflate(R.layout.fragment_youwon,null)).setNegativeButton(R.string.Ok,
+                    DialogInterface.OnClickListener { dialog, id ->
+                        // User cancelled the dialog
 
-
+                    })
             }
             else{
-                builder.setView(inflater.inflate(R.layout.fragment_you_lost,null)).setMessage(message)
+                builder.setView(inflater.inflate(R.layout.fragment_you_lost,null))
                     .setNegativeButton(R.string.Ok,
                         DialogInterface.OnClickListener { dialog, id ->
                             // User cancelled the dialog
-
                         })
             }
-
-
 
             // Create the AlertDialog object and return it
             builder.create()

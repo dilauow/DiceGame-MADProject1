@@ -1,5 +1,6 @@
 package com.example.dicegame
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -47,6 +48,7 @@ class gamePlayFragement : Fragment() {
 //    previouslyClicked Dice
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,6 +71,8 @@ class gamePlayFragement : Fragment() {
         binding.setwinScore.setOnClickListener {
             changeWinScore()
         }
+//        update all the wins
+        binding.totalWins.setText("H:"+GlobalData.playerWons.toString() + " /C:" + GlobalData.computerWons.toString())
 
 //        make the shuffle
         binding.shuffle.setOnClickListener {
@@ -112,9 +116,13 @@ class gamePlayFragement : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun changeWinScore() {
         winScore= binding.editWinningScore.text.toString().toInt()
         binding.setwinScore.visibility = View.GONE
+        binding.topScore.setText("Winning Score: " + binding.editWinningScore.text.toString())
+        binding.editWinningScore.visibility = View.GONE
+        binding.topScore.visibility =View.VISIBLE
     }
 
     private fun rollDice(imgR : ImageView): Int {
@@ -186,22 +194,39 @@ class gamePlayFragement : Fragment() {
         Log.d("Computer Score", computerScore.toString())
         if (yourScore>= winScore || computerScore>= winScore){
             if (yourScore<computerScore){
-//                you won
+//                you Lost
 
                 val popUp = YouLostDialogBox.newInstance("You Lost",false)
                 popUp.show(childFragmentManager,"dialog")
                 binding.shuffle.visibility = View.GONE
                 binding.Score.visibility = View.GONE
+                binding.setwinScore?.visibility = View.GONE
+                binding.editWinningScore?.visibility = View.GONE
+                GlobalData.computerWons += 1
+
 
 
             }
             else if (computerScore< yourScore){
 
-//                computer wins
+//                you wins
                 val popUp = YouLostDialogBox.newInstance("You Won",true)
                 popUp.show(childFragmentManager,"dialog")
                 binding.shuffle.visibility = View.GONE
                 binding.Score.visibility = View.GONE
+                binding.setwinScore?.visibility = View.GONE
+                binding.editWinningScore?.visibility = View.GONE
+                GlobalData.playerWons += 1
+
+
+            }
+            else if(computerScore.equals(yourScore)){
+                val pScore = shuffleAlltheDices(playerDiceList,true)
+                yourScore= updateScore(binding.yourScroreValue,pScore)
+                val cScore = shuffleAlltheDices(computerDiceList,false)
+                computerScore =updateScore(binding.computerScoreValue,cScore)
+                shuffleCounter=0
+                winnerCheck(view)
 
             }
         }
