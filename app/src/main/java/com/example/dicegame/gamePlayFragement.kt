@@ -27,6 +27,8 @@ class gamePlayFragement : Fragment() {
     lateinit var computerDiceList: MutableList<ImageView>
     lateinit var binding  : FragmentGamePlayFragementBinding
 
+    lateinit var playerDicesGeneratedIds : MutableList<Int>
+
 //    gameBeginner
     var winScore = 101
 
@@ -53,17 +55,29 @@ class gamePlayFragement : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+//        hold scores for each hand
+        var yourTempScore =0
+        var computerTempScore =0
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_game_play_fragement, container,false)
-//        bind all the dices
+//        selecting  all player the dices
         dice1 = binding.pd1
         dice2 = binding.pd2
         dice3 = binding.pd3
         dice4 = binding.pd4
         dice5 = binding.pd5
 
-        var yourTempScore =0
-        var computerTempScore =0
+//       get Ids of player dices
+        playerDicesGeneratedIds = mutableListOf(dice1.id,dice2.id,dice3.id,dice4.id,dice5.id)
+
+//        update scores when rotate
+        yourScore = GlobalData.currentPlayerScore
+        computerScore = GlobalData.currentComputerScore
+        winScore = GlobalData.gameOverScore
+        updateScore(binding.yourScroreValue,yourScore)
+        updateScore(binding.computerScoreValue,computerScore)
+
+//        decides how many times computer should roll for the first hand
         computerShuffleCounter = (Random.nextInt(3)+1)
         playerDiceList = mutableListOf(dice1,dice2,dice3,dice4,dice5)
         computerDiceList = mutableListOf(binding.cd1,binding.cd2,binding.cd3,binding.cd4,binding.cd5)
@@ -99,11 +113,13 @@ class gamePlayFragement : Fragment() {
         binding.Score.setOnClickListener {
             if (shuffleCounter !=0){
                 yourScore= updateScore(binding.yourScroreValue,yourTempScore)
-//                computerTempScore = shuffleAlltheDices(computerDiceList,false)
-//                computerScore= updateScore(binding.computerScoreValue, computerTempScore)
+//                update the shuffle counter for the next hand
                 computerShuffleCounter=RandomStratergyForRole(computerTempScore)
+//                colour everything white back
                 colourTheClickedDice()
+//                check winner
                 winnerCheck(it)
+//                reset counter
                 shuffleCounter =0
 
             }
@@ -117,6 +133,7 @@ class gamePlayFragement : Fragment() {
         return binding.root
     }
 
+//    change the game winning score by updating the win score
     @SuppressLint("SetTextI18n")
     private fun changeWinScore() {
         winScore= binding.editWinningScore.text.toString().toInt()
@@ -126,6 +143,7 @@ class gamePlayFragement : Fragment() {
         binding.topScore.visibility =View.VISIBLE
     }
 
+//    roll a single dice by using the image resource
     private fun rollDice(imgR : ImageView): Int {
         val imageNumber = (Random.nextInt(6)+1);
         val imageResource = when(imageNumber){
@@ -141,6 +159,7 @@ class gamePlayFragement : Fragment() {
 
     }
 
+//    shuffle all the dices when a image view array of dices is passed
     private fun shuffleAlltheDices(diceList : MutableList<ImageView>,player:Boolean): Int{
 
         var tempTotal = 0
@@ -149,20 +168,22 @@ class gamePlayFragement : Fragment() {
             shuffleCounter += 1
         }
         for (imgSelectors in diceList){
-
+//            if shuffling is done for player
             if (player){
-
+//                if dice rollability index value is true
 
                 if (yourDicesRollability[count]){
                     val score = rollDice(imgSelectors)
                     yourDicesArr[count] = score
                     tempTotal += score
                 }
+//                if value is false
                 else{
                     tempTotal += yourDicesArr[count]
                     yourDicesRollability[count] = true
                 }
             }
+//          if the shuffling is done for computer
             else{
                 if (computerDicesRollability[count]) {
                     val score = rollDice(imgSelectors)
@@ -182,6 +203,7 @@ class gamePlayFragement : Fragment() {
        return tempTotal
     }
 
+//    update the image views
     private fun updateScore(scoreHolder: TextView, tempTotal: Int):Int{
         var currentScore = scoreHolder.text.toString().toInt()
         currentScore += tempTotal
@@ -190,6 +212,7 @@ class gamePlayFragement : Fragment() {
         return currentScore
 
     }
+//    check winner after each hand
     private fun winnerCheck(view: View){
         Log.d("Your Score", yourScore.toString())
         Log.d("Computer Score", computerScore.toString())
@@ -205,6 +228,10 @@ class gamePlayFragement : Fragment() {
                 binding.editWinningScore?.visibility = View.GONE
                 GlobalData.computerWons += 1
 
+//                global data updtae
+                yourScore=0
+                computerScore=0
+                winScore =101
 
 
             }
@@ -219,8 +246,14 @@ class gamePlayFragement : Fragment() {
                 binding.editWinningScore?.visibility = View.GONE
                 GlobalData.playerWons += 1
 
+                // global data updtae
+                computerScore = 0
+                yourScore = 0
+                winScore=101
+
 
             }
+//            if the scores are tied, check win at each shuffle
             else if(computerScore.equals(yourScore)){
                 val pScore = shuffleAlltheDices(playerDiceList,true)
                 yourScore= updateScore(binding.yourScroreValue,pScore)
@@ -232,6 +265,8 @@ class gamePlayFragement : Fragment() {
             }
         }
     }
+
+
     private fun colourTheClickedDice(){
         var counter = 0
         for (bool in yourDicesRollability){
@@ -253,11 +288,11 @@ class gamePlayFragement : Fragment() {
                 if (shuffleCounter != 0){
                     Log.d("reach",dices.id.toString())
                     val clikedElementId = when(dices.id){
-                        2131231236 -> 0
-                        2131231237 -> 1
-                        2131231238 -> 2
-                        2131231239 -> 3
-                        2131231240 -> 4
+                        playerDicesGeneratedIds[0]-> 0
+                        playerDicesGeneratedIds[1] -> 1
+                        playerDicesGeneratedIds[2] -> 2
+                        playerDicesGeneratedIds[3]-> 3
+                        playerDicesGeneratedIds[4] -> 4
                         else -> 0
                     }
                     Log.d("clicked",clikedElementId.toString())
@@ -266,38 +301,52 @@ class gamePlayFragement : Fragment() {
                     colourTheClickedDice()
                     Log.d("after clicked array", yourDicesRollability.toString())
                 }
+                else{
+                    val toast = Toast.makeText(activity, "Shuffle 1st", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
             }
 
         }
 
     }
+
+//    random stratergy for the rolling
     private fun RandomStratergyForRole(firstAttemptScore: Int) : Int{
 
-        Log.d("Role NUmber", computerShuffleCounter.toString())
+//    computer decides to roll once
         if (computerShuffleCounter==1){
             computerScore=updateScore(binding.computerScoreValue,firstAttemptScore)
         }
+//    computer decides to roll twice
         if(computerShuffleCounter==2){
 
             computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
-            Log.d("Changed List ", computerDicesRollability.toString())
             val tempCompScore = shuffleAlltheDices(computerDiceList,false)
             computerScore=updateScore(binding.computerScoreValue,tempCompScore)
         }
+//    computer decides to roll thrice
         if (computerShuffleCounter==3){
 
             computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
-            Log.d("Changed List ", computerDicesRollability.toString())
             var tempCompScore = shuffleAlltheDices(computerDiceList,false)
 
             computerDicesRollability = utilities.makeHighestValuesFalse(computerDicesArr)
-            Log.d("Changed List ", computerDicesRollability.toString())
             tempCompScore = shuffleAlltheDices(computerDiceList,false)
             computerScore=updateScore(binding.computerScoreValue,tempCompScore)
 
         }
-
+//      return the number of roll count for the next hand
         return (Random.nextInt(3)+1)
+
+    }
+
+//    on destroy view store the important data in a static attribute in a class
+    override fun onDestroyView() {
+        super.onDestroyView()
+        GlobalData.currentPlayerScore = yourScore
+        GlobalData.currentComputerScore = computerScore
+        GlobalData.gameOverScore = winScore
 
     }
 

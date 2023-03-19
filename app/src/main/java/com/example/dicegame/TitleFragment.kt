@@ -1,16 +1,11 @@
 package com.example.dicegame
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Gravity
+
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.PopupWindow
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
 

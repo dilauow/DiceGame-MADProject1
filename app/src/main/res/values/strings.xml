@@ -31,4 +31,5 @@ and acknowledged.</string>
     <string name="_101">101</string>
     <string name="set_win_score">Set Win Score</string>
     <string name="player_0_computer_0">Player:0 Computer:0</string>
+    <string name="throwDice">throw</string>
 </resources>

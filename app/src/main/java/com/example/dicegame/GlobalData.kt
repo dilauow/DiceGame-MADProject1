@@ -6,6 +6,12 @@ class GlobalData() {
          var playerWons =0
         @JvmStatic
         var computerWons =0
+        @JvmStatic
+        var gameOverScore = 101
+
+        @JvmStatic
+        var currentPlayerScore = 0
+        var currentComputerScore =0
 
     }
 
